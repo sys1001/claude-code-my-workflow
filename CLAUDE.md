@@ -3,7 +3,10 @@
 <!-- HOW TO USE: Replace [BRACKETED PLACEHOLDERS] with your project info.
      Customize Beamer environments and CSS classes for your theme.
      Keep this file under ~150 lines — Claude loads it every session.
-     See the guide at docs/workflow-guide.html for full documentation. -->
+     See the guide at docs/workflow-guide.html for full documentation.
+     
+     USING CODEX? See AGENTS.md instead — it is the equivalent instructions
+     file for OpenAI Codex CLI and contains the same workflow adapted for Codex. -->
 
 **Project:** [YOUR PROJECT NAME]
 **Institution:** [YOUR INSTITUTION]

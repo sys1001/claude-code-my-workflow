@@ -1,15 +1,17 @@
-# My Claude Code Setup
+# My AI Coding Workflow Setup
 
-> **Work in progress.** This is not meant to be a polished guide for everyone. It's mostly a summary of how I've been using Claude Code for academic work — creating lecture slides, writing R scripts, managing Beamer-to-Quarto workflows, and so on. I keep learning new things, and as I do, I keep updating these files. This is just a way for me to share what I've figured out with friends and colleagues.
+> **Work in progress.** This is not meant to be a polished guide for everyone. It's mostly a summary of how I've been using AI coding assistants for academic work — creating lecture slides, writing R scripts, managing Beamer-to-Quarto workflows, and so on. I keep learning new things, and as I do, I keep updating these files. This is just a way for me to share what I've figured out with friends and colleagues.
 
 **Live site:** [psantanna.com/claude-code-my-workflow](https://psantanna.com/claude-code-my-workflow/)
-**Last Updated:** 2026-02-15
+**Last Updated:** 2026-02-20
 
-A ready-to-fork starter kit for academics using [Claude Code](https://code.claude.com/docs/en/overview) with **LaTeX/Beamer + R + Quarto**. You describe what you want; Claude plans the approach, runs specialized agents, fixes issues, verifies quality, and presents results — like a contractor who handles the entire job. Extracted from a production PhD course (6 lectures, 800+ slides).
+A ready-to-fork starter kit for academics using **AI coding assistants** ([Claude Code](https://code.claude.com/docs/en/overview) or [OpenAI Codex CLI](https://github.com/openai/codex)) with **LaTeX/Beamer + R + Quarto**. You describe what you want; the AI plans the approach, runs specialized agents, fixes issues, verifies quality, and presents results — like a contractor who handles the entire job. Extracted from a production PhD course (6 lectures, 800+ slides).
+
+> **Using Codex?** Jump straight to [Codex Quick Start](#codex-quick-start-5-minutes) below.
 
 ---
 
-## Quick Start (5 minutes)
+## Quick Start (5 minutes) — Claude Code
 
 ### 1. Fork & Clone
 
@@ -44,6 +46,60 @@ Then paste the following, filling in your project details:
 **What this does:** Claude reads all the configuration files, fills in your project name, institution, and preferences, then enters contractor mode — planning, implementing, reviewing, and verifying autonomously. You approve the plan and Claude handles the rest.
 
 **Prefer to configure manually?** See the [full guide](https://psantanna.com/claude-code-my-workflow/workflow-guide.html#sec-setup) for step-by-step manual setup instructions.
+
+---
+
+## Codex Quick Start (5 minutes)
+
+> This section is for users of [OpenAI Codex CLI](https://github.com/openai/codex). Codex reads `AGENTS.md` instead of `CLAUDE.md` as its project instructions file. All workflow concepts (plan-first, quality gates, orchestrator mode, session logging) apply equally.
+
+### 1. Install Codex CLI
+
+```bash
+npm install -g @openai/codex
+```
+
+Requires Node.js 22+ and an OpenAI API key exported as `OPENAI_API_KEY`.
+
+### 2. Fork & Clone
+
+```bash
+# Fork this repo on GitHub (click "Fork" on the repo page), then:
+git clone https://github.com/YOUR_USERNAME/claude-code-my-workflow.git my-project
+cd my-project
+```
+
+### 3. Start Codex and Paste This Prompt
+
+```bash
+codex
+```
+
+Then paste the following, filling in your project details:
+
+> I am starting to work on **[PROJECT NAME]** in this repo. **[Describe your project in 2–3 sentences — what you're building, who it's for, what tools you use.]**
+>
+> I want our collaboration to be structured, precise, and rigorous. When creating visuals, everything must be polished and publication-ready.
+>
+> I've set up the academic workflow in this repo. The configuration file is `AGENTS.md`. Please read it, understand the workflow, and then **update `AGENTS.md` to fit my project** — fill in placeholders, adjust the project name and institution, and propose any customizations specific to my use case.
+>
+> After that, use the plan-first workflow for all non-trivial tasks. Save plans to `quality_reports/plans/`. Once I approve a plan, switch to contractor mode — coordinate everything autonomously and only come back to me when there's ambiguity or a decision to make.
+>
+> Start by reading `AGENTS.md` and adapting it for this project.
+
+**What this does:** Codex reads `AGENTS.md`, fills in your project details, then enters contractor mode — planning, implementing, verifying, and scoring quality autonomously.
+
+### Key Differences from Claude Code
+
+| Feature | Claude Code | Codex CLI |
+|---------|------------|-----------|
+| Instructions file | `CLAUDE.md` | `AGENTS.md` |
+| Config directory | `.claude/` (auto-loaded) | Referenced from `AGENTS.md` |
+| Skills | `/skill-name` slash commands | Described inline in `AGENTS.md` |
+| Hooks | `.claude/hooks/` (auto-run) | Must be invoked manually |
+| Settings | `.claude/settings.json` | Environment variables / flags |
+
+> The `.claude/` directory (agents, skills, rules, hooks) contains Claude Code-specific definitions. When using Codex, read the relevant `.claude/` files manually or paste their content into your session. The workflow patterns they describe work with any capable AI coding assistant.
 
 ---
 
@@ -205,14 +261,15 @@ Rules use path-scoped loading: **always-on** rules load every session (~100 line
 
 | Tool | Required For | Install |
 |------|-------------|---------|
-| [Claude Code](https://code.claude.com/docs/en/overview) | Everything | `npm install -g @anthropic-ai/claude-code` |
+| [Claude Code](https://code.claude.com/docs/en/overview) | Everything (Claude users) | `npm install -g @anthropic-ai/claude-code` |
+| [OpenAI Codex CLI](https://github.com/openai/codex) | Everything (Codex users) | `npm install -g @openai/codex` |
 | XeLaTeX | LaTeX compilation | [TeX Live](https://tug.org/texlive/) or [MacTeX](https://tug.org/mactex/) |
 | [Quarto](https://quarto.org) | Web slides | [quarto.org/docs/get-started](https://quarto.org/docs/get-started/) |
 | R | Figures & analysis | [r-project.org](https://www.r-project.org/) |
 | pdf2svg | TikZ to SVG | `brew install pdf2svg` (macOS) |
 | [gh CLI](https://cli.github.com/) | PR workflow | `brew install gh` (macOS) |
 
-Not all tools are needed — install only what your project uses. Claude Code is the only hard requirement.
+Not all tools are needed — install only what your project uses. Either Claude Code or Codex CLI is the only hard requirement.
 
 ---
 
@@ -226,12 +283,16 @@ Not all tools are needed — install only what your project uses. Claude Code is
 6. **Customize the workflow quick reference** (`.claude/WORKFLOW_QUICK_REF.md`) with your non-negotiables and preferences
 7. **Set up the exploration folder** (`explorations/`) for experimental work
 
+> **Codex users:** Update `AGENTS.md` instead of `CLAUDE.md`. The `.claude/` folder contains the full agent/skill/rule definitions — reference them from your session or paste relevant sections into `AGENTS.md` for automatic loading.
+
 ---
 
 ## Additional Resources
 
 - [Claude Code Documentation](https://code.claude.com/docs/en/overview)
 - [Writing a Good CLAUDE.md](https://code.claude.com/docs/en/memory) — official guidance on project memory
+- [OpenAI Codex CLI](https://github.com/openai/codex) — open-source CLI from OpenAI
+- [AGENTS.md conventions](https://github.com/openai/codex#agentsmd) — how Codex reads project instructions
 
 ---
 
