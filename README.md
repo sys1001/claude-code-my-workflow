@@ -236,10 +236,44 @@ Not all tools are needed — install only what your project uses. Claude Code is
 
 ---
 
+## Using with GitHub Copilot
+
+This workflow is built for Claude Code, but the core project rules, folder structure, and commands work with GitHub Copilot too.
+
+### What works
+
+- Project instructions via `.github/copilot-instructions.md` (auto-loaded by Copilot Chat in VS Code)
+- All content workflows — Beamer/Quarto slides, R analysis, bibliography management
+- All scripts (`sync_to_docs.sh`, `quality_score.py`, etc.)
+
+### What doesn't work
+
+| Feature | Status |
+|---------|--------|
+| Hooks (file protection, context monitoring, notifications) | ❌ Claude Code only |
+| Slash commands / Skills (`/compile-latex`, `/proofread`, etc.) | ❌ Claude Code only — use prompt templates instead |
+| Sub-agents (parallel specialist review) | ❌ Claude Code only |
+| `settings.json` permission model | ❌ Claude Code only |
+
+### Quick setup for Copilot
+
+1. **The `.github/copilot-instructions.md` file is already included** — Copilot Chat reads it automatically. Fill in `[YOUR PROJECT NAME]`, `[YOUR INSTITUTION]`, and update the lecture table at the bottom.
+2. **Use prompt templates** from `.github/COPILOT_GUIDE.md` in place of slash commands.
+3. **Add the upstream remote** so you can pull new features from this repo:
+   ```bash
+   git remote add upstream https://github.com/psantanna/claude-code-my-workflow.git
+   ```
+4. **Pull updates** with `git fetch upstream && git merge upstream/main`. Your `.github/` customizations are never touched by upstream, so there are no conflicts.
+
+See **[`.github/COPILOT_GUIDE.md`](.github/COPILOT_GUIDE.md)** for the full compatibility breakdown, prompt templates for every skill, and the upstream sync strategy.
+
+---
+
 ## Additional Resources
 
 - [Claude Code Documentation](https://code.claude.com/docs/en/overview)
 - [Writing a Good CLAUDE.md](https://code.claude.com/docs/en/memory) — official guidance on project memory
+- [GitHub Copilot Custom Instructions](https://docs.github.com/en/copilot/customizing-copilot/adding-repository-custom-instructions-for-github-copilot) — how `.github/copilot-instructions.md` works
 
 ---
 
